@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countrysearch</title>
+    <!-- boot -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <!-- font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<div
+    style="background-image: url(https://m.media-amazon.com/images/I/71EO5R2tZWL._AC_UF1000,1000_QL80_.jpg); height: 100vh; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; background-repeat: no-repeat; background-size: cover;">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 border border-secondary bg-secondary p-4">
+                <h1 class="text-light text-center">Know About countries</h1>
+                <div class="d-flex mt-4">
+                    <input type="text" id="countryName" placeholder="Country name" class="form-control">
+                    <button type="button" class="btn btn-success ms-3" onclick="search()">Search</button>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+    <!-- 2 -->
+
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10" id="result">
+
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script>
+    const search = async () => {
+        console.log(countryName.value);
+        const response = await fetch(`https://restcountries.com/v3.1/name/${countryName.value}?fullText=true`)
+
+        // console.log(response);
+        response.json().then((data) => {
+            console.log(data);
+
+
+            //common 
+            let common = data[0].name.common
+            console.log(common);
+
+            //official
+            let offcial = data[0].name.official
+            console.log(offcial);
+
+            //currencies - name , symbol
+            for (let curr in data[0].currencies) {
+                var currencyname = data[0].currencies[curr].name
+                var symbol = data[0].currencies[curr].symbol
+            }
+            console.log(currencyname, symbol);
+
+
+            //capital
+            let capital = data[0].capital
+            console.log(capital);
+
+            //languages
+            let nationalLang = []
+            for (var lang in data[0].languages) {
+                nationalLang.push(data[0].languages[lang])
+            }
+            console.log(nationalLang);
+
+
+            //borders
+            let borders = data[0].borders
+            console.log(borders);
+
+            //area
+            let area = data[0].area
+            console.log(area);
+
+            //google maps
+            let map = data[0].maps.googleMaps
+            console.log(map);
+
+            //population
+            let population = data[0].population
+            console.log(population);
+
+            //timezones
+            let timeZone = data[0].timeZones
+            console.log(timeZone);
+
+
+            //continents
+            let continents = data[0].continents
+            console.log(continents);
+
+            //flags-png
+            let flags = data[0].flags.png
+            console.log(flags);
+
+
+
+            result.innerHTML = `
+<div class="card mb-3 p-3" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src= ${flags}   class="img-fluid rounded-start" alt="no image">
+                            <h5 class="card-title text-center mt-3">${offcial}</h5>
+                            <ul class="list-group list-group-flush border">
+                                
+                                <li class="list-group-item">Captial : ${capital}</li>
+
+                            </ul>
+
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+
+                                <ul class="list-group list-group-flush border">
+                                    <li class="list-group-item">Common: ${common}</li>
+                                    <li class="list-group-item">Continent : ${continents}</li>
+                                    <li class="list-group-item">Population : ${population}</li>
+                                    <li class="list-group-item">Area : ${area}</li>
+                                    <li class="list-group-item">Time zone : ${timeZone}</li>
+                                    <li class="list-group-item">Border : ${borders}</li>
+                                    <li class="list-group-item">national Language : ${nationalLang}</li>
+                                    <li class="list-group-item">currencies : ${symbol} ${currencyname}</li>
+                                    <li class="list-group-item">google map :<a href=${map}" target="_blank"> ${map}</a></li>
+
+
+                                </ul>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+`
+
+
+
+
+
+        })
+    }
+</script>
+
+
+
+</html>
